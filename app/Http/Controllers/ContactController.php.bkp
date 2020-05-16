@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ContactController extends Controller
+{
+    public function index($section = "") {
+        if (!$section) {
+            return redirect("contacts/list");
+        }
+        return view('contacts');
+    }
+}
