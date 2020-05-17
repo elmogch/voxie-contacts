@@ -14,11 +14,11 @@ Install Node libraries:
 
 ## Configuration
     - Copy .env.example and rename it to .env
-    - DB app configuration in .env file
+    - DB app configuration in .env file (MySQL database)
         - DB_DATABASE=laravel
         - DB_USERNAME=root
         - DB_PASSWORD=
-    - DB testing configuration in .env file (Also unit test was developt with MySQL)
+    - DB testing configuration in .env file (Also unit test is MySQL database)
         - DB_DATABASE_TEST=voxie_contacts_test
         - DB_USERNAME_TEST=root
         - DB_PASSWORD_TEST=
