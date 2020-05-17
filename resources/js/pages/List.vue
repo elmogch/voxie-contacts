@@ -2,15 +2,21 @@
   <div id="page_list">
     <h1>Contacts list</h1>
     <section>
-      <p class="is-loading" v-if="isLoading">
+      <p class="text-center is-loading" v-if="isLoading">
         Cargando...
       </p>
-      <v-data-table v-else :headers="headers" :items="contacts" :items-per-page="10" class="elevation-1">
-        <template v-slot:item.actions="{ item }">
-          <v-btn x-small @click="contactShow(item.id)" color="primary">Ver detalle</v-btn>
-          <v-btn x-small @click="contactsDelete(item.id)" color="error">Eliminar</v-btn>
-        </template>
-      </v-data-table>
+      <div v-else>
+        <v-data-table :headers="headers" :items="contacts" :items-per-page="10" class="elevation-1">
+          <template v-slot:item.actions="{ item }">
+            <v-btn x-small @click="contactShow(item.id)" color="primary">Ver detalle</v-btn>
+            <v-btn x-small @click="contactsDelete(item.id)" color="error">Eliminar</v-btn>
+          </template>
+        </v-data-table>
+
+        <div class="text-center">
+            <v-btn @click="contactsDelete('all')" color="error">Eliminar todos</v-btn>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -56,8 +62,10 @@ export default {
 </script>
 
 <style scoped>
-.is-loading {
+.text-center {
   text-align: center;
+}
+.is-loading {
   font-size: 1em;
 }
 </style>

@@ -2145,6 +2145,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4011,7 +4017,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.is-loading[data-v-134cdca7] {\n  text-align: center;\n  font-size: 1em;\n}\n", ""]);
+exports.push([module.i, "\n.text-center[data-v-134cdca7] {\n  text-align: center;\n}\n.is-loading[data-v-134cdca7] {\n  font-size: 1em;\n}\n", ""]);
 
 // exports
 
@@ -5530,59 +5536,81 @@ var render = function() {
   return _c("div", { attrs: { id: "page_list" } }, [
     _c("h1", [_vm._v("Contacts list")]),
     _vm._v(" "),
-    _c(
-      "section",
-      [
-        _vm.isLoading
-          ? _c("p", { staticClass: "is-loading" }, [
-              _vm._v("\n      Cargando...\n    ")
-            ])
-          : _c("v-data-table", {
-              staticClass: "elevation-1",
-              attrs: {
-                headers: _vm.headers,
-                items: _vm.contacts,
-                "items-per-page": 10
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "item.actions",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { "x-small": "", color: "primary" },
-                          on: {
-                            click: function($event) {
-                              return _vm.contactShow(item.id)
+    _c("section", [
+      _vm.isLoading
+        ? _c("p", { staticClass: "text-center is-loading" }, [
+            _vm._v("\n      Cargando...\n    ")
+          ])
+        : _c(
+            "div",
+            [
+              _c("v-data-table", {
+                staticClass: "elevation-1",
+                attrs: {
+                  headers: _vm.headers,
+                  items: _vm.contacts,
+                  "items-per-page": 10
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "item.actions",
+                    fn: function(ref) {
+                      var item = ref.item
+                      return [
+                        _c(
+                          "v-btn",
+                          {
+                            attrs: { "x-small": "", color: "primary" },
+                            on: {
+                              click: function($event) {
+                                return _vm.contactShow(item.id)
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("Ver detalle")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { "x-small": "", color: "error" },
-                          on: {
-                            click: function($event) {
-                              return _vm.contactsDelete(item.id)
+                          },
+                          [_vm._v("Ver detalle")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          {
+                            attrs: { "x-small": "", color: "error" },
+                            on: {
+                              click: function($event) {
+                                return _vm.contactsDelete(item.id)
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("Eliminar")]
-                      )
-                    ]
+                          },
+                          [_vm._v("Eliminar")]
+                        )
+                      ]
+                    }
                   }
-                }
-              ])
-            })
-      ],
-      1
-    )
+                ])
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "text-center" },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "error" },
+                      on: {
+                        click: function($event) {
+                          return _vm.contactsDelete("all")
+                        }
+                      }
+                    },
+                    [_vm._v("Eliminar todos")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+    ])
   ])
 }
 var staticRenderFns = []
