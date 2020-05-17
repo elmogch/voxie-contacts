@@ -4,11 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use \Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Storage;
 
 use App\Contact;
 use App\CustomAttribute;
 use App\Http\Requests\StoreContacts;
-use App\Src\CsvReader;
 
 /**
  * Class ContactController
@@ -36,7 +37,7 @@ class ContactController extends Controller {
     public function index() {
         // $contacts = Contact::paginate(config('voxie.pagination_rows'));
         $contacts = Contact::all();
-        return response()->json($contacts, $this->status_code);
+        return response()->json($contacts, HttpResponse::HTTP_OK);
     }
 
     /**
@@ -47,7 +48,7 @@ class ContactController extends Controller {
      */
     public function show($id) {
         $contact = Contact::with('customAttributes')->findOrFail($id);
-        return response()->json($contact, $this->status_code);
+        return response()->json($contact, HttpResponse::HTTP_OK);
     }
 
     /**
@@ -57,11 +58,20 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(StoreContacts $request) {
+        $contacts_file_path = realpath('../storage/app/contacts.csv');
+        // $contacts_file_path = getcwd().'/storage/app/contacts.csv';
+        echo "contacts_file_path: ".$contacts_file_path."<br><br>\n\n";
+        $contacts = Contact::transformCsvToArray($contacts_file_path);
+        // $contacts = [0 => 'asdf'];
+        echo "contacts: <pre>".print_r($contacts, true)."</pre>   <br><br>\n\n";
+        echo "--------------------<br><br>\n\n";
+
         $contacts_created = [];
-        $contacts_file = $request->file('contacts');
+        $contacts_file_path = $request
+            ->file('contacts')
+            ->getRealPath();
         
-        $csvReader = new CsvReader($contacts_file->getRealPath());
-        $contacts = $csvReader->toArray();
+        $contacts = Contact::transformCsvToArray($contacts_file_path);
         
         foreach($contacts as $contact) {
             $custom_attributes = [];
@@ -87,7 +97,7 @@ class ContactController extends Controller {
             $contacts_created[] = $contact_created_array;
         }
         
-        return response()->json($contacts_created, $this->status_code);
+        return response()->json($contacts_created, HttpResponse::HTTP_CREATED);
     }
 
     /**
@@ -97,11 +107,19 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $contact = Contact::find($id);
-        if ($contact) {
+        if ($id==='all') {
+            // This 'delete all' option never should be implemented in production environment
+            CustomAttribute::query()->delete();
+            Contact::query()->delete();
+        } else  {
+            $contact = Contact::find($id);
+            if (!$contact) {
+                return response()->json(['message' => 'Not Found!'], HttpResponse::HTTP_NOT_FOUND);
+            }
             $contact->customAttributes()->delete();
             $contact->delete();
         }
         return $this->index();
+
     }
 }

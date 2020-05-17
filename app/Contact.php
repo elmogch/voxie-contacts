@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Src\CsvReader;
+
 class Contact extends Model {
     /**
      * The attributes that are mass assignable.
@@ -37,5 +39,10 @@ class Contact extends Model {
      */
     public function customAttributes() {
         return $this->hasMany('App\CustomAttribute');
+    }
+
+    public static function transformCsvToArray($csv_file_path) {
+        $csvReader = new CsvReader($csv_file_path);
+        return $csvReader->toArray();
     }
 }
