@@ -59,13 +59,8 @@ class ContactController extends Controller {
      */
     public function store(StoreContacts $request) {
         $contacts_file_path = realpath('../storage/app/contacts.csv');
-        // $contacts_file_path = getcwd().'/storage/app/contacts.csv';
-        echo "contacts_file_path: ".$contacts_file_path."<br><br>\n\n";
         $contacts = Contact::transformCsvToArray($contacts_file_path);
-        // $contacts = [0 => 'asdf'];
-        echo "contacts: <pre>".print_r($contacts, true)."</pre>   <br><br>\n\n";
-        echo "--------------------<br><br>\n\n";
-
+        
         $contacts_created = [];
         $contacts_file_path = $request
             ->file('contacts')
